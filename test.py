@@ -1,9 +1,6 @@
-some_array = []
-for i in range(10):
-    some_array.append(i)
-    
-mid = 5
-before = some_array[mid - 10:mid]
-after = some_array[mid: mid + 10]
-print(before)
-print(after)
+import librosa
+y, sr = librosa.load('./audio/input/oneword.wav')
+f = open('./amp.txt', 'w')
+for x in y:
+    f.write(f'{x}\n')
+    print(x)

@@ -4,6 +4,7 @@ import soundfile as sf
 # THRESHOLD = 0.005
 THRESHOLD = 5
 # BUFFER = 0.1
+FILE_NAME = "word.wav"
 
 def calc_length(arr, sr):
     return len(arr) / sr
@@ -15,7 +16,7 @@ def calc_length(arr, sr):
 #         return True
 #     return False
 
-y, sr = librosa.load('./audio/slow_man.mp3')
+y, sr = librosa.load(f'./audio/input/{FILE_NAME}')
 
 tenth = int(sr * 0.05)
 
@@ -24,12 +25,6 @@ total = len(y)
 running_sum = 0
 running_list = []
 for idx, x in enumerate(y):
-    # before_idx = idx - tenth if idx > tenth else 0
-    # after_idx = idx + tenth
-    # before = y[before_idx:idx]
-    # after = y[idx:after_idx]
-    # if is_within_sound(before) or is_within_sound(after):
-    #     new_y.append(x)
     abs_x=abs(x)
     if idx < tenth:
         running_sum += abs_x
@@ -41,9 +36,11 @@ for idx, x in enumerate(y):
         running_list.append(abs_x)
         if running_sum > THRESHOLD:
             new_y.append(x)
+    
+    
     print(f'{idx}/{total}')
 
 # new_y = [x for x in y if x > THRESHOLD or x < -THRESHOLD]
-sf.write('./output/test.wav', new_y, sr)
+sf.write('./audio/output/test.wav', new_y, sr)
 print("Original Length: ", calc_length(y, sr))
 print("New Length: ", calc_length(new_y, sr))
